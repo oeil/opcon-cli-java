@@ -13,9 +13,8 @@ import org.slf4j.LoggerFactory;
 import com.beust.jcommander.JCommander;
 import com.smatechnologies.opcon.command.api.arguments.OpConCliArguments;
 import com.smatechnologies.opcon.command.api.config.CmdConfiguration;
-import com.smatechnologies.opcon.command.api.impl.OpConCliImpl;
+import com.smatechnologies.opcon.command.api.task.TaskProcessor;
 import com.smatechnologies.opcon.command.api.interfaces.ICmdConstants;
-import com.smatechnologies.opcon.command.api.interfaces.IOpConCli;
 import com.smatechnologies.opcon.command.api.util.Utilities;
 
 import ch.qos.logback.classic.LoggerContext;
@@ -69,9 +68,9 @@ public class OpConCli {
 	}
 	
 	public static void main(String[] args) {
-		OpConCli _OpConCli = new OpConCli();
-		IOpConCli _IOpConCli = new OpConCliImpl(); 
-		OpConCliArguments _OpConCliArguments = new OpConCliArguments();
+		OpConCli opConCli = new OpConCli();
+		TaskProcessor taskProcessor = new TaskProcessor();
+		OpConCliArguments cliArguments = new OpConCliArguments();
 		JCommander jcCmdLineArguments = null;
 		
 		Utilities _Utilities = new Utilities();
@@ -86,7 +85,7 @@ public class OpConCli {
 			System.setProperty("https.protocols", "TLSv1,TLSv1.1,TLSv1.2");
     		// get the arguments
 			jcCmdLineArguments = JCommander.newBuilder()
-					.addObject(_OpConCliArguments)
+					.addObject(cliArguments)
 					.build();
 			jcCmdLineArguments.parse(args);
 			workingDirectory = System.getProperty(ICmdConstants.SYSTEM_USER_DIRECTORY);
@@ -94,27 +93,27 @@ public class OpConCli {
 			// go get information from ini file
 			// set general values
 			iniPrefs = new IniPreferences(new Ini(new File(configFileName)));
-			_CmdConfiguration = _Utilities.setConfigurationValues(iniPrefs, _CmdConfiguration, _OpConCliArguments.getOpConSystem());
-			_OpConCli.setLogger(_CmdConfiguration.isDebug());
+			_CmdConfiguration = _Utilities.setConfigurationValues(iniPrefs, _CmdConfiguration, cliArguments.getOpConSystem());
+			opConCli.setLogger(_CmdConfiguration.isDebug());
 			LOG.info("working Directory {" + workingDirectory + "}");
 			LOG.info("configFileName {" + configFileName + "}");
 			LOG.info(SeperatorLineMsg);
 			LOG.info(MessageFormat.format(ProgramNameAndVersionMsg, ICmdConstants.SOFTWARE_VERSION));
 			LOG.info(SeperatorLineMsg);
-			LOG.info(MessageFormat.format(DisplayOpConSystemArgumentMsg, _OpConCliArguments.getOpConSystem()));
+			LOG.info(MessageFormat.format(DisplayOpConSystemArgumentMsg, cliArguments.getOpConSystem()));
 			LOG.info(SeperatorLineMsg);
 			
 			// if date present check the format
-			if(_OpConCliArguments.getTaskDate() != null) {
-				if(!_Utilities.checkDateFormat(_OpConCliArguments.getTaskDate())) {
-					LOG.error(MessageFormat.format(InvalidDateFormatMsg, _OpConCliArguments.getTaskDate()));
+			if(cliArguments.getTaskDate() != null) {
+				if(!_Utilities.checkDateFormat(cliArguments.getTaskDate())) {
+					LOG.error(MessageFormat.format(InvalidDateFormatMsg, cliArguments.getTaskDate()));
 					System.exit(1);
 				}
 			} else {
 				// use current date
-				_OpConCliArguments.setTaskDate(_Utilities.getCurrentDate());
+				cliArguments.setTaskDate(_Utilities.getCurrentDate());
 			}
-			completionCode = _IOpConCli.processRequest(_OpConCliArguments);
+			completionCode = taskProcessor.processRequest(cliArguments);
 			LOG.info(SeperatorLineMsg);
 			LOG.info(MessageFormat.format(CompletedProcessingMsg, String.valueOf(completionCode)));
 			LOG.info(SeperatorLineMsg);

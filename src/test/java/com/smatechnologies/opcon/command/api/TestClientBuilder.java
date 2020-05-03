@@ -7,15 +7,10 @@ import java.util.List;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.ext.ContextResolver;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smatechnologies.opcon.command.api.impl.MachineGroupImpl;
 import com.smatechnologies.opcon.command.api.ws.WsLogger;
 import com.smatechnologies.opcon.restapiclient.DefaultClientBuilder;
-import com.smatechnologies.opcon.restapiclient.WsErrorException;
 import com.smatechnologies.opcon.restapiclient.WsException;
 import com.smatechnologies.opcon.restapiclient.api.OpconApi;
 import com.smatechnologies.opcon.restapiclient.api.OpconApiProfile;

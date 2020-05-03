@@ -2,14 +2,13 @@ package com.smatechnologies.opcon.command.api;
 
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.ext.ContextResolver;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.smatechnologies.opcon.command.api.impl.JobImpl;
+import com.smatechnologies.opcon.command.api.task.runnable.JobImpl;
 import com.smatechnologies.opcon.command.api.interfaces.IJob;
 import com.smatechnologies.opcon.command.api.ws.WsLogger;
 import com.smatechnologies.opcon.restapiclient.DefaultClientBuilder;

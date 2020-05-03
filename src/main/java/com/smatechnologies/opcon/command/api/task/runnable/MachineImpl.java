@@ -1,4 +1,4 @@
-package com.smatechnologies.opcon.command.api.impl;
+package com.smatechnologies.opcon.command.api.task.runnable;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;

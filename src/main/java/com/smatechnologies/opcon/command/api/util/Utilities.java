@@ -88,11 +88,7 @@ public class Utilities {
 		return matcher.matches();
 	}
 
-	public boolean versionCheck(
-			String version,
-			String task
-			) throws Exception {
-		
+	public boolean versionCheck(String version, String task) {
 		boolean versionOK = false;
 		Integer testNumber183 = 1830;
 		Integer testNumber181 = 1810;
